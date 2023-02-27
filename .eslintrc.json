@@ -7,7 +7,11 @@
   "extends": ["plugin:react/recommended"],
   "plugins": ["react"],
   "parserOptions": {
-    "project": "./tsconfig.json"
+    "project": "./tsconfig.json",
+    "ecmaVersion": "latest"
+  },
+  "env": {
+    "es6": true
   },
   "rules": {
     "@typescript-eslint/strict-boolean-expressions": "off",
