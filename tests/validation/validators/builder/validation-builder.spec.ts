@@ -20,4 +20,17 @@ describe("ValidationBuilder", () => {
     const validations = ValidationBuilder.field("any_field").min(8).build();
     expect(validations).toEqual([new MinLenghtValidation("any_field", 8)]);
   });
+
+  test("Should return a list of validations", () => {
+    const validations = ValidationBuilder.field("any_field")
+      .required()
+      .min(8)
+      .email()
+      .build();
+    expect(validations).toEqual([
+      new RequiredFieldValidation("any_field"),
+      new MinLenghtValidation("any_field", 8),
+      new EmailValidation("any_field"),
+    ]);
+  });
 });
