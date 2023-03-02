@@ -10,6 +10,7 @@
     "test:watch": "npm test -- --watch",
     "test:staged": "npm test -- --findRelatedTests",
     "test:ci": "npm test -- --coverage",
+    "check": "npm-check -u -s",
     "prepare": "husky install"
   },
   "keywords": [],
@@ -30,7 +31,7 @@
     "eslint-plugin-promise": "^6.1.1",
     "eslint-plugin-react": "^7.32.2",
     "faker": "^5.5.3",
-    "git-commit-msg-linter": "^4.7.4",
+    "git-commit-msg-linter": "^4.8.1",
     "husky": "^8.0.3",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^29.4.3",
