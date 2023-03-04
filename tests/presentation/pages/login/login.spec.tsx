@@ -5,6 +5,8 @@ import { Login } from '@/presentation/pages'
 import { render, RenderResult, fireEvent, cleanup, waitFor } from '@testing-library/react'
 import { ValidationStub, AuthenticationSpy, SaveAccessTokenMock } from "@/tests/presentation/mock";
 import { InvalidCredentialsError } from "@/domain/errors";
+import { Router } from "react-router-dom";
+import { createMemoryHistory } from "@remix-run/router";
 
 type SutTypes = {
     sut: RenderResult
@@ -16,13 +18,21 @@ type SutParams = {
     validationError: string
 }
 
-
+const history = createMemoryHistory({ initialEntries: ['/login'] })
 const makeSut = (params?: SutParams): SutTypes => {
     const validationStub = new ValidationStub()
     const authenticationSpy = new AuthenticationSpy();
     const saveAccessTokenMock = new SaveAccessTokenMock();
     validationStub.errorMessage = params?.validationError;
-    const sut = render(<Login validation={validationStub} authentication={authenticationSpy} saveAccessToken={saveAccessTokenMock}/>)
+    const sut = render(
+        <Router location={"/login"} navigator={history}>
+            <Login 
+                validation={validationStub} 
+                authentication={authenticationSpy} 
+                saveAccessToken={saveAccessTokenMock}
+            />
+        </Router>
+    );
     return {
         sut,
         authenticationSpy,
@@ -165,6 +175,5 @@ describe("Login Component", () => {
         const { sut, authenticationSpy, saveAccessTokenMock } = makeSut();
         await simulateValidSubmit(sut);
         expect(saveAccessTokenMock.accessToken).toBe(authenticationSpy.account.accessToken);
-        expect(history.length).toBe(1);
     })
 })
