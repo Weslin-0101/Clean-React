@@ -174,4 +174,10 @@ describe("Signup Component", () => {
         await simulateValidSubmit(sut);
         expect(saveAccessTokenMock.accessToken).toBe(addAccountSpy.account.accessToken);
     })
+
+    test("Should go to login page", async () => {
+        const { sut } = makeSut();
+        const loginLink = sut.getByTestId('login-link');
+        fireEvent.click(loginLink);
+    })
 })
