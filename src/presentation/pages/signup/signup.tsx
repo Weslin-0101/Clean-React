@@ -16,11 +16,11 @@ const Signup: React.FC<Props> = ({ validation }: Props) => {
         name: "",
         nameError: "",
         email: "",
-        emailError: "Campo obrigatório",
+        emailError: "",
         password: "",
-        passwordError: "Campo obrigatório",
+        passwordError: "",
         passwordConfirmation: "",
-        passwordConfirmationError: "Campo obrigatório",
+        passwordConfirmationError: "",
         mainError: ""
     })
 
