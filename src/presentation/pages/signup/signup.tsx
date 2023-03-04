@@ -5,11 +5,12 @@ import Context from '@/presentation/contexts/form/form-context';
 import Footer from '@/presentation/components/footer/footer';
 import { Link } from 'react-router-dom';
 import { Validation } from '@/presentation/protocols/validation';
-import { AddAccount } from '@/domain/usecases';
+import { AddAccount, SaveAccessToken } from '@/domain/usecases';
 
 type Props = {
     validation: Validation
     addAccount: AddAccount
+    saveAccessToken: SaveAccessToken
 }
 
 const handleButtonError = (state: any) => {
@@ -19,7 +20,7 @@ const handleButtonError = (state: any) => {
         !!state.passwordConfirmationError
 }
 
-const Signup: React.FC<Props> = ({ validation, addAccount }: Props) => {
+const Signup: React.FC<Props> = ({ validation, addAccount, saveAccessToken }: Props) => {
     const [state, setState] = useState({
         isLoading: false,
         name: "",
@@ -50,12 +51,13 @@ const Signup: React.FC<Props> = ({ validation, addAccount }: Props) => {
                 return
             }
             setState({ ...state, isLoading: true })
-            await addAccount.add({
+            const account = await addAccount.add({
                 name: state.name,
                 email: state.email,
                 password: state.password,
                 passwordConfirmations: state.passwordConfirmation,
             })
+            await saveAccessToken.save(account.accessToken)
         } catch (error) {
             setState({
                 ...state,
