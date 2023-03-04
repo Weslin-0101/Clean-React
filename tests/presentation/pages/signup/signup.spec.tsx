@@ -122,7 +122,7 @@ describe("Signup Component", () => {
         Helper.testElementExists(sut, "spinner");
     })
 
-    test("Should call Authentication with correct values", async () => {
+    test("Should call AddAccountSpy with correct values", async () => {
         const { sut, addAccountSpy } = makeSut();
         const name = "any_name";
         const email = "any_email@email.com";
@@ -136,10 +136,17 @@ describe("Signup Component", () => {
         })
     })
 
-    test("Should call Authentication only once", async () => {
+    test("Should call AddAccountSpy only once", async () => {
         const { sut, addAccountSpy } = makeSut();
         await simulateValidSubmit(sut);
         await simulateValidSubmit(sut);
         expect(addAccountSpy.callsCount).toBe(1);
+    })
+
+    test("Should not call AddAccountSpy if form is invalid", async () => {
+        const validationError = "any_error"
+        const { sut, addAccountSpy } = makeSut({ validationError });
+        await simulateValidSubmit(sut);
+        expect(addAccountSpy.callsCount).toBe(0);
     })
 })
