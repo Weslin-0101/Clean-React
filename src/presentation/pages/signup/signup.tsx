@@ -10,6 +10,13 @@ type Props = {
     validation: Validation
 }
 
+const handleButtonError = (state: any) => {
+    return !!state.nameError ||
+        !!state.emailError ||
+        !!state.passwordError ||
+        !!state.passwordConfirmationError
+}
+
 const Signup: React.FC<Props> = ({ validation }: Props) => {
     const [state, setState] = useState({
         isLoading: false,
@@ -45,7 +52,7 @@ const Signup: React.FC<Props> = ({ validation }: Props) => {
                     <Input type="password" name="password" placeholder="Digite seu senha" />
                     <Input type="password" name="passwordConfirmation" placeholder="Confirme sua senha" />
 
-                    <button data-testid="submit" disabled className={Styles.submit} type="submit">Criar Conta</button>
+                    <button data-testid="submit" disabled={handleButtonError(state)} className={Styles.submit} type="submit">Criar Conta</button>
                     <span className={Styles.link}>Voltar Para Login</span>
 
                     <FormStatus />
