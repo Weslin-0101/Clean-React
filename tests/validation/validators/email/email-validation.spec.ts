@@ -3,24 +3,27 @@ import { EmailValidation } from "@/validation/validators";
 
 import faker from "faker";
 
-const makeSut = (): EmailValidation => new EmailValidation("email");
+const makeSut = (field: string): EmailValidation => new EmailValidation(field);
 
 describe("EmailValidation", () => {
   test("Should return error if email is invalid", () => {
-    const sut = makeSut();
-    const error = sut.validate(faker.random.word());
+    const field = "email";
+    const sut = makeSut(field);
+    const error = sut.validate({ [field]: faker.random.word() });
     expect(error).toEqual(new InvalidFieldError("email"));
   });
 
   test("Should return falsy if email is valid", () => {
-    const sut = makeSut();
-    const error = sut.validate(faker.internet.email());
+    const field = faker.database.column();
+    const sut = makeSut(field);
+    const error = sut.validate({ [field]: faker.internet.email() });
     expect(error).toBeFalsy();
   });
 
   test("Should return falsy if email is empty", () => {
-    const sut = makeSut();
-    const error = sut.validate("");
+    const field = faker.database.column();
+    const sut = makeSut(field);
+    const error = sut.validate({ [field]: "" });
     expect(error).toBeFalsy();
   });
 });
