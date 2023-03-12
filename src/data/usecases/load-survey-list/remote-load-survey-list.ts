@@ -17,6 +17,8 @@ export class RemoteLoadSurveyList implements LoadSurveyList {
           ...remoteSurvey,
           date: new Date(remoteSurvey.date),
         }));
+      case HttpStatusCode.noContent:
+        return [];
       default:
         throw new UnexpectedError();
     }
