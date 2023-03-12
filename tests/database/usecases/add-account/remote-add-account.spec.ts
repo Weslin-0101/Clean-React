@@ -1,21 +1,17 @@
 import { RemoteAddAccount } from "@/data/usecases/add-account/remote-add-account";
 import { mockAccountModel, mockAddAccountParams } from "@/tests/domain/mocks";
 import { HttpPostClientSpy } from "@/tests/database/mocks";
-import { AddAccountParams } from "@/domain/usecases";
 import { AccountModel } from "@/domain/models";
 import { HttpStatusCode } from "@/data/protocols";
 import { EmailInUseError, UnexpectedError } from "@/domain/errors";
 
 type SutTypes = {
   sut: RemoteAddAccount;
-  httpPostClientSpy: HttpPostClientSpy<AddAccountParams, AccountModel>;
+  httpPostClientSpy: HttpPostClientSpy<AccountModel>;
 };
 
 const makeSut = (url: string = "any_url"): SutTypes => {
-  const httpPostClientSpy = new HttpPostClientSpy<
-    AddAccountParams,
-    AccountModel
-  >();
+  const httpPostClientSpy = new HttpPostClientSpy<AccountModel>();
   const sut = new RemoteAddAccount(url, httpPostClientSpy);
   return {
     sut,
