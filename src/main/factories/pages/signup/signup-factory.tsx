@@ -6,7 +6,7 @@ import {
     makeSignUpValidation 
 } from '@/main/factories/usecases';
 
-export const makeSignUp: React.FC = () => {
+const MakeSignUp = () => {
     return (
         <Signup 
             validation={makeSignUpValidation()}
@@ -15,3 +15,5 @@ export const makeSignUp: React.FC = () => {
         />
     )
 }
+
+export default MakeSignUp;

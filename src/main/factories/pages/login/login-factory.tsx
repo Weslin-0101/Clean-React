@@ -7,7 +7,7 @@ from '@/main/factories/usecases';
 
 import React from 'react';
 
-export const makeLogin: React.FC = () => {   
+const MakeLogin = () => {   
     return (
         <Login 
             validation={makeLoginValidation()} 
@@ -16,3 +16,5 @@ export const makeLogin: React.FC = () => {
         />
     )
 }
+
+export default MakeLogin;
