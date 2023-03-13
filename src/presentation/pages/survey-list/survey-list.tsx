@@ -1,21 +1,13 @@
 import React from 'react'
 import Styles from './survey-list-styles.scss'
-import { Logo } from '@/presentation/components';
+import { Header } from '@/presentation/components';
 import Footer from '@/presentation/components/footer/footer';
 
 const SurveyList: React.FC = () => {
     return (
         <div className={Styles.surveyListWrap}>
-            <header className={Styles.headerWrap}>
-                <div className={Styles.headerContent}>
-                    <Logo />
-                    <div className={Styles.logoutWrap}>
-                        <span>Wesley</span>
-                        <a href="#">Sair</a>
-                    </div>
-                </div>
-            </header>
-
+            <Header />
+            
             <div className={Styles.contentWrap}>
                 <h2>Enquetes</h2>
                 <ul>
@@ -29,7 +21,7 @@ const SurveyList: React.FC = () => {
                                 <span className={Styles.month}>03</span>
                                 <span className={Styles.year}>2023</span>
                             </time>
-                            <p>Quer ver algo que vai te deixar de boa aberta?</p>
+                            <p>Quer ver algo que vai te deixar de boca aberta?</p>
                         </div>
                         <footer>Ver Resultado</footer>
                     </li>
