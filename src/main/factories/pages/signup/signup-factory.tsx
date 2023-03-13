@@ -1,7 +1,6 @@
 import { Signup } from '@/presentation/pages';
 import React from 'react';
 import { 
-    makeLocalUpdateCurrentAccount, 
     makeRemoteAddAccount, 
     makeSignUpValidation 
 } from '@/main/factories/usecases';
@@ -11,7 +10,6 @@ const MakeSignUp = () => {
         <Signup 
             validation={makeSignUpValidation()}
             addAccount={makeRemoteAddAccount()}
-            updateCurrentAccount={makeLocalUpdateCurrentAccount()}
         />
     )
 }

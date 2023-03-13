@@ -1,15 +1,17 @@
 import React from "react";
-import { cleanup, fireEvent, render, RenderResult, waitFor } from "@testing-library/react";
 import { Signup } from "@/presentation/pages";
-import { AddAccountSpy, Helper, UpdateCurrentAccountMock, ValidationStub } from '@/tests/presentation/mock'
+import { ApiContext } from "@/presentation/contexts"
 import { EmailInUseError } from "@/domain/errors";
+import { AccountModel } from "@/domain/models";
+import { AddAccountSpy, Helper, ValidationStub } from '@/tests/presentation/mock'
+import { cleanup, fireEvent, render, RenderResult, waitFor } from "@testing-library/react";
 import { createMemoryHistory } from "@remix-run/router";
 import { Router } from 'react-router-dom';
 
 type SutTypes = {
     sut: RenderResult
     addAccountSpy: AddAccountSpy
-    updateCurrentAccountMock: UpdateCurrentAccountMock
+    setCurrentAccountMock (account: AccountModel): void
 }
 
 type SutParams = {
@@ -21,20 +23,21 @@ const makeSut = (params?: SutParams): SutTypes => {
     const validationStub = new ValidationStub();
     validationStub.errorMessage = params?.validationError;
     const addAccountSpy = new AddAccountSpy()
-    const updateCurrentAccountMock = new UpdateCurrentAccountMock();
+    const setCurrentAccountMock = jest.fn()
     const sut = render(
-        <Router location={"/signup"} navigator={history}>
-            <Signup 
-                validation={validationStub}
-                addAccount={addAccountSpy}
-                updateCurrentAccount={updateCurrentAccountMock}
-            />
-        </Router>
+        <ApiContext.Provider value={{ setCurrentAccount: setCurrentAccountMock }}>
+            <Router location={"/signup"} navigator={history}>
+                <Signup 
+                    validation={validationStub}
+                    addAccount={addAccountSpy}
+                />
+            </Router>
+        </ApiContext.Provider>
     )
     return {
         sut,
         addAccountSpy,
-        updateCurrentAccountMock
+        setCurrentAccountMock
     }
 }
 
@@ -170,9 +173,9 @@ describe("Signup Component", () => {
     })
 
     test("Should call UpdateCurrentAccount on success", async () => {
-        const { sut, addAccountSpy, updateCurrentAccountMock } = makeSut();
+        const { sut, addAccountSpy, setCurrentAccountMock } = makeSut();
         await simulateValidSubmit(sut);
-        expect(updateCurrentAccountMock.account).toEqual(addAccountSpy.account);
+        expect(setCurrentAccountMock).toHaveBeenCalledWith(addAccountSpy.account);
     })
 
     test("Should go to login page", async () => {

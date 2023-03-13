@@ -2,21 +2,22 @@ import React from "react";
 import faker from 'faker';
 
 import { Login } from '@/presentation/pages'
+import { ApiContext } from "@/presentation/contexts"
 import { render, RenderResult, fireEvent, cleanup, waitFor } from '@testing-library/react'
 import { 
     ValidationStub, 
     AuthenticationSpy, 
-    UpdateCurrentAccountMock, 
     Helper 
 } from "@/tests/presentation/mock";
 import { InvalidCredentialsError } from "@/domain/errors";
 import { Router } from "react-router-dom";
 import { createMemoryHistory } from "@remix-run/router";
+import { AccountModel } from "@/domain/models";
 
 type SutTypes = {
     sut: RenderResult
     authenticationSpy: AuthenticationSpy
-    updateCurrentAccountMock: UpdateCurrentAccountMock
+    setCurrentAccountMock (account: AccountModel): void
 }
 
 type SutParams = {
@@ -27,21 +28,23 @@ const history = createMemoryHistory({ initialEntries: ['/login'] })
 const makeSut = (params?: SutParams): SutTypes => {
     const validationStub = new ValidationStub()
     const authenticationSpy = new AuthenticationSpy();
-    const updateCurrentAccountMock = new UpdateCurrentAccountMock();
+    const setCurrentAccountMock = jest.fn();
     validationStub.errorMessage = params?.validationError;
     const sut = render(
-        <Router location={"/login"} navigator={history}>
-            <Login 
-                validation={validationStub} 
-                authentication={authenticationSpy} 
-                updateCurrentAccount={updateCurrentAccountMock}
-            />
-        </Router>
+        <ApiContext.Provider value={{ setCurrentAccount: setCurrentAccountMock }}>
+            <Router location={"/login"} navigator={history}>
+                <Login 
+                    validation={validationStub} 
+                    authentication={authenticationSpy} 
+                />
+            </Router>
+
+        </ApiContext.Provider>
     );
     return {
         sut,
         authenticationSpy,
-        updateCurrentAccountMock
+        setCurrentAccountMock
     }
 }
 
@@ -141,8 +144,8 @@ describe("Login Component", () => {
     })
 
     test('Should call UpdateCurrentAccount on success', async () => {
-        const { sut, authenticationSpy, updateCurrentAccountMock } = makeSut();
+        const { sut, authenticationSpy, setCurrentAccountMock } = makeSut();
         await simulateValidSubmit(sut);
-        expect(updateCurrentAccountMock.account).toEqual(authenticationSpy.account);
+        expect(setCurrentAccountMock).toHaveBeenCalledWith(authenticationSpy.account);
     })
 })
