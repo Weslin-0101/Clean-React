@@ -2,7 +2,7 @@ import { Login } from '@/presentation/pages';
 import { 
     makeRemoteAuthentication, 
     makeLoginValidation, 
-    makeLocalSaveAccessToken } 
+    makeLocalUpdateCurrentAccount } 
 from '@/main/factories/usecases';
 
 import React from 'react';
@@ -12,7 +12,7 @@ const MakeLogin = () => {
         <Login 
             validation={makeLoginValidation()} 
             authentication={makeRemoteAuthentication()} 
-            saveAccessToken={makeLocalSaveAccessToken()}
+            updateCurrentAccount={makeLocalUpdateCurrentAccount()}
         />
     )
 }

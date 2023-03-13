@@ -6,7 +6,7 @@ import { render, RenderResult, fireEvent, cleanup, waitFor } from '@testing-libr
 import { 
     ValidationStub, 
     AuthenticationSpy, 
-    SaveAccessTokenMock, 
+    UpdateCurrentAccountMock, 
     Helper 
 } from "@/tests/presentation/mock";
 import { InvalidCredentialsError } from "@/domain/errors";
@@ -16,7 +16,7 @@ import { createMemoryHistory } from "@remix-run/router";
 type SutTypes = {
     sut: RenderResult
     authenticationSpy: AuthenticationSpy
-    saveAccessTokenMock: SaveAccessTokenMock
+    updateCurrentAccountMock: UpdateCurrentAccountMock
 }
 
 type SutParams = {
@@ -27,21 +27,21 @@ const history = createMemoryHistory({ initialEntries: ['/login'] })
 const makeSut = (params?: SutParams): SutTypes => {
     const validationStub = new ValidationStub()
     const authenticationSpy = new AuthenticationSpy();
-    const saveAccessTokenMock = new SaveAccessTokenMock();
+    const updateCurrentAccountMock = new UpdateCurrentAccountMock();
     validationStub.errorMessage = params?.validationError;
     const sut = render(
         <Router location={"/login"} navigator={history}>
             <Login 
                 validation={validationStub} 
                 authentication={authenticationSpy} 
-                saveAccessToken={saveAccessTokenMock}
+                updateCurrentAccount={updateCurrentAccountMock}
             />
         </Router>
     );
     return {
         sut,
         authenticationSpy,
-        saveAccessTokenMock
+        updateCurrentAccountMock
     }
 }
 
@@ -140,9 +140,9 @@ describe("Login Component", () => {
         Helper.testChildCount(sut, "error-wrap", 1);
     })
 
-    test('Should call SaveAccessToken on success', async () => {
-        const { sut, authenticationSpy, saveAccessTokenMock } = makeSut();
+    test('Should call UpdateCurrentAccount on success', async () => {
+        const { sut, authenticationSpy, updateCurrentAccountMock } = makeSut();
         await simulateValidSubmit(sut);
-        expect(saveAccessTokenMock.accessToken).toBe(authenticationSpy.account.accessToken);
+        expect(updateCurrentAccountMock.account).toEqual(authenticationSpy.account);
     })
 })

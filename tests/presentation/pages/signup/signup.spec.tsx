@@ -1,7 +1,7 @@
 import React from "react";
 import { cleanup, fireEvent, render, RenderResult, waitFor } from "@testing-library/react";
 import { Signup } from "@/presentation/pages";
-import { AddAccountSpy, Helper, SaveAccessTokenMock, ValidationStub } from '@/tests/presentation/mock'
+import { AddAccountSpy, Helper, UpdateCurrentAccountMock, ValidationStub } from '@/tests/presentation/mock'
 import { EmailInUseError } from "@/domain/errors";
 import { createMemoryHistory } from "@remix-run/router";
 import { Router } from 'react-router-dom';
@@ -9,7 +9,7 @@ import { Router } from 'react-router-dom';
 type SutTypes = {
     sut: RenderResult
     addAccountSpy: AddAccountSpy
-    saveAccessTokenMock: SaveAccessTokenMock
+    updateCurrentAccountMock: UpdateCurrentAccountMock
 }
 
 type SutParams = {
@@ -21,20 +21,20 @@ const makeSut = (params?: SutParams): SutTypes => {
     const validationStub = new ValidationStub();
     validationStub.errorMessage = params?.validationError;
     const addAccountSpy = new AddAccountSpy()
-    const saveAccessTokenMock = new SaveAccessTokenMock();
+    const updateCurrentAccountMock = new UpdateCurrentAccountMock();
     const sut = render(
         <Router location={"/signup"} navigator={history}>
             <Signup 
                 validation={validationStub}
                 addAccount={addAccountSpy}
-                saveAccessToken={saveAccessTokenMock}
+                updateCurrentAccount={updateCurrentAccountMock}
             />
         </Router>
     )
     return {
         sut,
         addAccountSpy,
-        saveAccessTokenMock
+        updateCurrentAccountMock
     }
 }
 
@@ -169,10 +169,10 @@ describe("Signup Component", () => {
         Helper.testChildCount(sut, "error-wrap", 1);
     })
 
-    test("Should call SaveAccessToken on success", async () => {
-        const { sut, addAccountSpy, saveAccessTokenMock } = makeSut();
+    test("Should call UpdateCurrentAccount on success", async () => {
+        const { sut, addAccountSpy, updateCurrentAccountMock } = makeSut();
         await simulateValidSubmit(sut);
-        expect(saveAccessTokenMock.accessToken).toBe(addAccountSpy.account.accessToken);
+        expect(updateCurrentAccountMock.account).toEqual(addAccountSpy.account);
     })
 
     test("Should go to login page", async () => {
