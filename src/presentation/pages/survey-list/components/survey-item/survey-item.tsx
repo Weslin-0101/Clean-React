@@ -1,18 +1,24 @@
 import React from 'react';
 import Styles from './survey-item-styles.scss'
 import { Icon, IconName } from '@/presentation/components';
+import { LoadSurveyList } from '@/domain/usecases/load-survey-list';
 
-const SurveyItem: React.FC = () => {
+type Props = {
+    survey: LoadSurveyList.Model
+}
+
+const SurveyItem: React.FC<Props> = ({ survey }: Props) => {
+    const iconName = survey.didAnswer ? IconName.thumbUp : IconName.thumbDown;
     return (
         <li className={Styles.surveyItemWrap}>
             <div className={Styles.surveyContent}>
-                <Icon className={Styles.iconWrap} iconName={IconName.thumbDown}/>
+                <Icon className={Styles.iconWrap} iconName={iconName}/>
                 <time>
-                    <span className={Styles.day}>12</span>
-                    <span className={Styles.month}>03</span>
-                    <span className={Styles.year}>2023</span>
+                    <span data-testid="day" className={Styles.day}>{survey.date.getDate()}</span>
+                    <span data-testid="month" className={Styles.month}>{survey.date.toLocaleString("pt-Br", { month: "short" }).replace(".", " ")}</span>
+                    <span data-testid="year" className={Styles.year}>{survey.date.getFullYear()}</span>
                 </time>
-                <p>Quer ver algo que vai te deixar de boca aberta?</p>
+                <p data-testid="question">{survey.question}</p>
             </div>
             <footer>Ver Resultado</footer>
         </li>
