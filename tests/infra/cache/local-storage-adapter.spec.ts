@@ -10,16 +10,34 @@ describe("LocalStorageAdapter", () => {
     localStorage.clear();
   });
 
-  test("Should call localStorage with correct values", async () => {
-    const sut = makeSut();
-    const key = "any_key";
-    const value = {
-      any: "any_value",
-    };
-    await sut.set(key, value);
-    expect(localStorage.setItem).toHaveBeenCalledWith(
-      key,
-      JSON.stringify(value)
-    );
+  describe("set", () => {
+    test("Should call localStorage.setItem with correct values", async () => {
+      const sut = makeSut();
+      const key = "any_key";
+      const value = {
+        any: "any_value",
+      };
+      await sut.set(key, value);
+      expect(localStorage.setItem).toHaveBeenCalledWith(
+        key,
+        JSON.stringify(value)
+      );
+    });
+  });
+
+  describe("get", () => {
+    test("Should call localStorage.getItem with correct value", () => {
+      const sut = makeSut();
+      const key = "any_key";
+      const value = {
+        any: "any_value",
+      };
+      const getItemSpy = jest
+        .spyOn(localStorage, "getItem")
+        .mockReturnValueOnce(JSON.stringify(value));
+      const obj = sut.get(key);
+      expect(obj).toEqual(value);
+      expect(getItemSpy).toHaveBeenCalledWith(key);
+    });
   });
 });
