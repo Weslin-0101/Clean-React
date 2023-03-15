@@ -21,7 +21,7 @@ export const mockGetRequest = (): HttpGetParams => ({
   },
 });
 
-export class HttpPostClientSpy<R> implements HttpPostClient {
+export class HttpPostClientSpy<R = any> implements HttpPostClient {
   url?: string;
   body?: any;
   response: HttpResponse<R> = {
@@ -35,14 +35,16 @@ export class HttpPostClientSpy<R> implements HttpPostClient {
   }
 }
 
-export class HttpGetClientSpy<R> implements HttpGetClient<R> {
+export class HttpGetClientSpy<R = any> implements HttpGetClient<R> {
   url: string;
+  headers?: any;
   response: HttpResponse<R> = {
     statusCode: HttpStatusCode.ok,
   };
 
   async get(params: HttpGetParams): Promise<HttpResponse<R>> {
     this.url = params.url;
+    this.headers = params.headers;
     return Promise.resolve(this.response);
   }
 }
