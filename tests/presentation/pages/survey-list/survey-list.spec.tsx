@@ -1,7 +1,6 @@
 import React from 'react'
 import '@testing-library/jest-dom'
 import { LoadSurveyList } from '@/domain/usecases/load-survey-list'
-import { UnexpectedError } from '@/domain/errors';
 import { SurveyList } from "@/presentation/pages"
 import { render, screen, waitFor } from "@testing-library/react"
 import { mockSurveyListModel } from '@/tests/domain/mocks';
