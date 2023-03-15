@@ -6,12 +6,13 @@ import { useNavigate } from 'react-router-dom'
 
 const Header: React.FC = () => {
     const navigate = useNavigate();
-    const { setCurrentAccount } = useContext(ApiContext)
+    const { setCurrentAccount, getCurrentAccount } = useContext(ApiContext)
     const logout = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>): void => {
         event.preventDefault();
         setCurrentAccount(undefined);
         navigate('/login');
     }
+
     return (
         <header className={Styles.headerWrap}>
             <div className={Styles.headerContent}>

@@ -5,7 +5,7 @@ import { SurveyList } from "@/presentation/pages"
 import ApiContext from '@/presentation/contexts/api/api-context'
 import { Router } from 'react-router-dom'
 import { render, screen, waitFor } from "@testing-library/react"
-import { mockSurveyListModel } from '@/tests/domain/mocks';
+import { mockAccountModel, mockSurveyListModel } from '@/tests/domain/mocks';
 import { createMemoryHistory } from 'history'
 
 
@@ -24,7 +24,7 @@ type SutTypes = {
 }
 const makeSut = (loadSurveyListSpy = new LoadSurveyListSpy()): SutTypes => {
     render(
-        <ApiContext.Provider value={{ setCurrentAccount: jest.fn() }}>
+        <ApiContext.Provider value={{ setCurrentAccount: jest.fn(), getCurrentAccount: () => mockAccountModel() }}>
             <Router location={""} navigator={createMemoryHistory()}>
                 <SurveyList loadSurveyList={loadSurveyListSpy}/>
             </Router>
