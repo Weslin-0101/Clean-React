@@ -12,7 +12,7 @@ export class SetStorageMock implements SetStorage {
 
 export class GetStorageSpy implements GetStorage {
   key: string;
-  value = "any_value";
+  value: any = "any_value";
 
   get(key: string) {
     this.key = key;

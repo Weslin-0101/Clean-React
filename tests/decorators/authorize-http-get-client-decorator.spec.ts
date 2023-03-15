@@ -5,6 +5,7 @@ import {
   HttpGetClientSpy,
   mockGetRequest,
 } from "@/tests/database/mocks";
+import { mockAccountModel } from "../domain/mocks";
 
 type SutTypes = {
   sut: AuthorizeHttpGetClientDecorator;
@@ -44,5 +45,18 @@ describe("AuthorizeHttpGetClientDecorator", () => {
     await sut.get(httpRequest);
     expect(httpGetClientSpy.url).toBe(httpRequest.url);
     expect(httpGetClientSpy.headers).toEqual(httpRequest.headers);
+  });
+
+  test("Should add headers if GetStorage is valid", async () => {
+    const { sut, getStorageSpy, httpGetClientSpy } = makeSut();
+    getStorageSpy.value = mockAccountModel();
+    const httpRequest: HttpGetParams = {
+      url: "any_url",
+    };
+    await sut.get(httpRequest);
+    expect(httpGetClientSpy.url).toBe(httpRequest.url);
+    expect(httpGetClientSpy.headers).toEqual({
+      "x-access-token": getStorageSpy.value.accessToken,
+    });
   });
 });
