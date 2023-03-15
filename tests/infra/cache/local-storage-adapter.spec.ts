@@ -23,6 +23,13 @@ describe("LocalStorageAdapter", () => {
         JSON.stringify(value)
       );
     });
+
+    test("Should call localStorage.removeItem if value is null", async () => {
+      const sut = makeSut();
+      const key = "any_key";
+      await sut.set(key, undefined);
+      expect(localStorage.removeItem).toHaveBeenCalledWith(key);
+    });
   });
 
   describe("get", () => {
