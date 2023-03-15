@@ -6,3 +6,7 @@ export const mockSurveyModel = (): LoadSurveyList.Model => ({
   didAnswer: false,
   date: new Date(),
 });
+
+export const mockSurveyListModel = (): LoadSurveyList.Model[] => [
+  mockSurveyModel(),
+];
