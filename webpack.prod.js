@@ -34,11 +34,14 @@ module.exports = merge(Commom, {
   },
   externals: {
     react: "React",
+    axios: "axios",
     "react-dom": "ReactDOM",
   },
   plugins: [
     new DefinePlugin({
-      "process.env.API_URL": JSON.stringify("http://fordevs.herokuapp.com/api"),
+      "process.env.API_URL": JSON.stringify(
+        "https://fordevs.herokuapp.com/api"
+      ),
     }),
     new HtmlWebPackPlugin({
       template: "./template.prod.html",
