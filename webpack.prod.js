@@ -44,7 +44,7 @@ module.exports = merge(Commom, {
       template: "./template.prod.html",
     }),
     new MiniCssExtractPlugin({
-      filename: "main-bundle-[hash].css",
+      filename: "main-bundle-[fullhash].css",
     }),
   ],
 });
