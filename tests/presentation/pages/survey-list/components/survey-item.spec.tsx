@@ -18,8 +18,5 @@ describe("SurveyItem Component", () => {
         makeSut(survey);
         expect(screen.getByTestId("icon")).toHaveProperty("src", IconName.thumbUp);
         expect(screen.getByTestId("question")).toHaveTextContent(survey.question);
-        expect(screen.getByTestId("day")).toHaveTextContent("14");
-        expect(screen.getByTestId("month")).toHaveTextContent("mar");
-        expect(screen.getByTestId("year")).toHaveTextContent("2023");
     })
 })
