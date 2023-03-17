@@ -10,12 +10,14 @@ export const mockRemoteSurveyResultModel =
         answer: "any_answer",
         count: 0,
         percent: 0,
+        isCurrentAccountAnswer: false,
       },
       {
         image: "other_image",
         answer: "other_answer",
         count: 10,
         percent: 50,
+        isCurrentAccountAnswer: true,
       },
     ],
   });
