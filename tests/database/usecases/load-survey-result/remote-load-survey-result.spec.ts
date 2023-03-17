@@ -1,7 +1,10 @@
 import { HttpStatusCode } from "@/data/protocols";
 import { RemoteLoadSurveyResult } from "@/data/usecases";
 import { AccessDeniedError, UnexpectedError } from "@/domain/errors";
-import { HttpGetClientSpy } from "@/tests/database/mocks";
+import {
+  HttpGetClientSpy,
+  mockRemoteSurveyResultModel,
+} from "@/tests/database/mocks";
 
 type SutTypes = {
   sut: RemoteLoadSurveyResult;
@@ -21,6 +24,11 @@ describe("RemoteLoadSurveyResult Usecase", () => {
   test("Should call HttpGetClient with correct URL", async () => {
     const url = "any_url";
     const { sut, httpGetClientSpy } = makeSut(url);
+    const httpResult = mockRemoteSurveyResultModel();
+    httpGetClientSpy.response = {
+      statusCode: HttpStatusCode.ok,
+      body: httpResult,
+    };
     await sut.load();
     expect(httpGetClientSpy.url).toBe(url);
   });
@@ -50,5 +58,20 @@ describe("RemoteLoadSurveyResult Usecase", () => {
     };
     const promise = sut.load();
     await expect(promise).rejects.toThrow(new UnexpectedError());
+  });
+
+  test("Should return a SurveyResult on 200", async () => {
+    const { sut, httpGetClientSpy } = makeSut();
+    const result = mockRemoteSurveyResultModel();
+    httpGetClientSpy.response = {
+      statusCode: HttpStatusCode.ok,
+      body: result,
+    };
+    const httpResponse = await sut.load();
+    expect(httpResponse).toEqual({
+      question: result.question,
+      date: new Date(result.date),
+      answers: result.answers,
+    });
   });
 });
