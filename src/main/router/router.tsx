@@ -4,6 +4,7 @@ import { MakeLogin, MakeSignUp, MakeSurveyList } from '@/main/factories/pages'
 import { ApiContext } from '@/presentation/contexts'
 import { getCurrentAccountAdapter, setCurrentAccountAdapter } from '@/main/adapters'
 import { PrivateRoute } from '@/presentation/components'
+import { SurveyResult } from '@/presentation/pages'
 
 const Router: React.FC = () => {
     return (
@@ -21,7 +22,8 @@ const Router: React.FC = () => {
                                 <MakeSurveyList />
                             </PrivateRoute>
                         }
-                    /> 
+                    />
+                    <Route path="/" element={<SurveyResult />} />
                 </Routes>
             </BrowserRouter>
         </ApiContext.Provider>
