@@ -1,6 +1,6 @@
 import { HttpStatusCode } from "@/data/protocols";
 import { RemoteLoadSurveyResult } from "@/data/usecases";
-import { AccessDeniedError } from "@/domain/errors";
+import { AccessDeniedError, UnexpectedError } from "@/domain/errors";
 import { HttpGetClientSpy } from "@/tests/database/mocks";
 
 type SutTypes = {
@@ -32,5 +32,14 @@ describe("RemoteLoadSurveyResult Usecase", () => {
     };
     const promise = sut.load();
     await expect(promise).rejects.toThrow(new AccessDeniedError());
+  });
+
+  test("Should throw UnexpectedError if HttpGetClient returns 404", async () => {
+    const { sut, httpGetClientSpy } = makeSut();
+    httpGetClientSpy.response = {
+      statusCode: HttpStatusCode.notFound,
+    };
+    const promise = sut.load();
+    await expect(promise).rejects.toThrow(new UnexpectedError());
   });
 });
