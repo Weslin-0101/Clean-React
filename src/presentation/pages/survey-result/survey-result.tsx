@@ -9,7 +9,7 @@ type Props = {
 }
 
 const SurveyResult: React.FC<Props> = ({ loadSurveyResult }: Props) => {
-    const [state] = useState({
+    const [state, setState] = useState({
         isLoading: false,
         error: "",
         surveyResult: null as LoadSurveyResult.Model
@@ -17,7 +17,7 @@ const SurveyResult: React.FC<Props> = ({ loadSurveyResult }: Props) => {
 
     useEffect(() => {
         loadSurveyResult.load()
-            .then()
+            .then(surveyResult => setState(old => ({ ...old, surveyResult })))
             .catch()
     }, [])
 
@@ -25,24 +25,21 @@ const SurveyResult: React.FC<Props> = ({ loadSurveyResult }: Props) => {
         <div className={Styles.surveyResultWrap}>
             <Header />
 
-            <div data-test-id="survey-result" className={Styles.contentWrap}>
+            <div data-testid="survey-result" className={Styles.contentWrap}>
                 { state.surveyResult &&
                 <> 
                     <hgroup>
-                        <Calendar date={new Date()} className={Styles.calendarWrap}/>
-                        <h2>Qual é o seu Framework preferido?</h2>
+                        <Calendar date={state.surveyResult.date} className={Styles.calendarWrap}/>
+                        <h2>{state.surveyResult.question}</h2>
                     </hgroup>
                     <FlipMove className={Styles.answersList}>
-                        <li>
-                            <img src="https://www.datocms-assets.com/45470/1631110818-logo-react-js.png" />
-                            <span className={Styles.answer}>ReactJS</span>
-                            <span className={Styles.percent}>50%</span>
-                        </li>
-                        <li className={Styles.active}>
-                            <img src="https://logodownload.org/wp-content/uploads/2022/04/javascript-logo-1.png" />
-                            <span className={Styles.answer}>JavaScript</span>
-                            <span className={Styles.percent}>80%</span>
-                        </li>
+                        { state.surveyResult.answers.map(answer => 
+                            <li key={answer.answer}>
+                                { answer.image && <img src={answer.image} alt={answer.answer} />}
+                                <span className={Styles.answer}>{answer.answer}</span>
+                                <span className={Styles.percent}>{answer.percent}</span>
+                            </li>
+                        )}
                     </FlipMove>
                     <button>Voltar</button>
                     { state.isLoading && <Loading />}
