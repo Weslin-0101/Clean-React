@@ -23,7 +23,7 @@ const Router: React.FC = () => {
                             </PrivateRoute>
                         }
                     />
-                    <Route path="/" element={<SurveyResult />} />
+                    <Route path="/" element={<SurveyResult loadSurveyResult={undefined}/>} />
                 </Routes>
             </BrowserRouter>
         </ApiContext.Provider>
