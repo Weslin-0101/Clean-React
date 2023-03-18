@@ -4,6 +4,7 @@ import FlipMove from "react-flip-move"
 import { Calendar, Error, Footer, Header, Loading } from "@/presentation/components"
 import { useErrorHandler } from "@/presentation/hooks"
 import { LoadSurveyResult } from "@/domain/usecases"
+import { Link } from "react-router-dom"
 
 type Props = {
     loadSurveyResult: LoadSurveyResult
@@ -49,7 +50,7 @@ const SurveyResult: React.FC<Props> = ({ loadSurveyResult }: Props) => {
                             </li>
                         )}
                     </FlipMove>
-                    <button>Voltar</button>
+                    <button><Link to={"/survey-list"}>Voltar</Link></button>
                     { state.isLoading && <Loading />}
                     { state.error && <Error error={state.error} reload={reload} />}
                 </>

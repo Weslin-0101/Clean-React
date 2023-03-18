@@ -1,10 +1,9 @@
 import React from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import { MakeLogin, MakeSignUp, MakeSurveyList } from '@/main/factories/pages'
+import { MakeLogin, MakeSignUp, MakeSurveyList, MakeSurveyResult } from '@/main/factories/pages'
 import { ApiContext } from '@/presentation/contexts'
 import { getCurrentAccountAdapter, setCurrentAccountAdapter } from '@/main/adapters'
 import { PrivateRoute } from '@/presentation/components'
-import { SurveyResult } from '@/presentation/pages'
 
 const Router: React.FC = () => {
     return (
@@ -23,7 +22,7 @@ const Router: React.FC = () => {
                             </PrivateRoute>
                         }
                     />
-                    <Route path="/" element={<SurveyResult loadSurveyResult={undefined}/>} />
+                    <Route path="/survey-result" element={<MakeSurveyResult />} />
                 </Routes>
             </BrowserRouter>
         </ApiContext.Provider>
