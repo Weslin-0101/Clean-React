@@ -9,24 +9,28 @@ const SurveyResult: React.FC = () => {
             <Header />
 
             <div className={Styles.contentWrap}>
-                <hgroup>
-                    <Calendar date={new Date()} className={Styles.calendarWrap}/>
-                    <h2>Qual é o seu Framework preferido?</h2>
-                </hgroup>
-                <FlipMove className={Styles.answersList}>
-                    <li>
-                        <img src="https://www.datocms-assets.com/45470/1631110818-logo-react-js.png" />
-                        <span className={Styles.answer}>ReactJS</span>
-                        <span className={Styles.percent}>50%</span>
-                    </li>
-                    <li className={Styles.active}>
-                        <img src="https://logodownload.org/wp-content/uploads/2022/04/javascript-logo-1.png" />
-                        <span className={Styles.answer}>JavaScript</span>
-                        <span className={Styles.percent}>80%</span>
-                    </li>
-                </FlipMove>
-                <button>Voltar</button>
-                { false && <Loading />}
+                { true &&
+                <> 
+                    <hgroup>
+                        <Calendar date={new Date()} className={Styles.calendarWrap}/>
+                        <h2>Qual é o seu Framework preferido?</h2>
+                    </hgroup>
+                    <FlipMove className={Styles.answersList}>
+                        <li>
+                            <img src="https://www.datocms-assets.com/45470/1631110818-logo-react-js.png" />
+                            <span className={Styles.answer}>ReactJS</span>
+                            <span className={Styles.percent}>50%</span>
+                        </li>
+                        <li className={Styles.active}>
+                            <img src="https://logodownload.org/wp-content/uploads/2022/04/javascript-logo-1.png" />
+                            <span className={Styles.answer}>JavaScript</span>
+                            <span className={Styles.percent}>80%</span>
+                        </li>
+                    </FlipMove>
+                    <button>Voltar</button>
+                    { false && <Loading />}
+                </>
+                }
             </div>
 
             <Footer />
