@@ -20,19 +20,14 @@ const makeSut = (url: string = "any_url"): SutTypes => {
 };
 
 describe("RemoteAddAccount", () => {
-  test("Should call HttpClient with correct URL and Method", async () => {
+  test("Should call HttpClient with correct values", async () => {
     const url = "any_url";
-    const { sut, httpClientSpy } = makeSut();
-    await sut.add(mockAddAccountParams());
-    expect(httpClientSpy.url).toBe(url);
-    expect(httpClientSpy.method).toBe("post");
-  });
-
-  test("Shout call HttpClient with correct body", async () => {
     const { sut, httpClientSpy } = makeSut();
     const addAccountParams = mockAddAccountParams();
     await sut.add(addAccountParams);
+    expect(httpClientSpy.url).toBe(url);
     expect(httpClientSpy.body).toEqual(addAccountParams);
+    expect(httpClientSpy.method).toBe("post");
   });
 
   test("Should throw EmailInUseError if HttpCLient returns 403", async () => {
