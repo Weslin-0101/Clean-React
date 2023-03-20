@@ -2,6 +2,7 @@ import { HttpStatusCode } from "@/data/protocols";
 import { RemoteSaveSurveyResult } from "@/data/usecases";
 import {
   HttpClientSpy,
+  mockRemoteSaveSurveyResultParams,
   mockRemoteSurveyResultModel,
 } from "@/tests/database/mocks";
 
@@ -20,16 +21,18 @@ const makeSut = (url = "any_url"): SutTypes => {
 };
 
 describe("RemoteSaveSurveyResult Usecase", () => {
-  test("Should call httpClient with correct URL and Method", async () => {
+  test("Should call httpClient with correct values", async () => {
     const url = "any_url";
     const { sut, httpClientSpy } = makeSut(url);
     const httpResult = mockRemoteSurveyResultModel();
+    const httpParams = mockRemoteSaveSurveyResultParams();
     httpClientSpy.response = {
       statusCode: HttpStatusCode.ok,
       body: httpResult,
     };
-    await sut.save({ answer: "any_answer" });
+    await sut.save(httpParams);
     expect(httpClientSpy.url).toBe(url);
     expect(httpClientSpy.method).toBe("put");
+    expect(httpClientSpy.body).toEqual(httpParams);
   });
 });

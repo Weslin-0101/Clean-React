@@ -1,4 +1,5 @@
 import { RemoteLoadSurveyResult } from "@/data/usecases";
+import { SaveSurveyResult } from "@/domain/usecases";
 
 export const mockRemoteSurveyResultModel =
   (): RemoteLoadSurveyResult.Model => ({
@@ -20,4 +21,9 @@ export const mockRemoteSurveyResultModel =
         isCurrentAccountAnswer: true,
       },
     ],
+  });
+
+export const mockRemoteSaveSurveyResultParams =
+  (): SaveSurveyResult.Params => ({
+    answer: "any_answer",
   });
