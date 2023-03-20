@@ -1,14 +1,9 @@
 import React from "react"
 import Styles from "./answer-styles.scss"
+import { AnswerModel } from "@/domain/models"
 
 type Props = {
-    answer: {
-        image?: string;
-        answer: string;
-        count: number;
-        percent: number;
-        isCurrentAccountAnswer: boolean;
-    }
+    answer: AnswerModel
 }
 
 const Answer: React.FC<Props> = ({ answer }: Props) => {
